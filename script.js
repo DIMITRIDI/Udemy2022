@@ -1,29 +1,40 @@
-"use strict"; 
+"use strict"; 
 
-const usdCurr = 28;
-const discount = 0.9;
-
-function convert(amount, curr) {
-   return curr * amount;
+// 1. Создайте функцию, которая будет на вход принимать аргумент с именем человека и возвращать строку.
+function sayHello(name) {
+   return `Привет, ${name}!`;
 }
 
-function promotion(result) {
-   console.log(result * discount);
+sayHello('Alex');
+
+// 2. Создайте функцию, которая принимает в себя 1 аргумент в виде целого числа и возвращает массив из трех чисел: одно на 1 меньше, сам аргумент и число на 1 больше.
+function returnNeighboringNumbers(num) {
+   return [num - 1, num, num + 1];
 }
 
-promotion(convert(500, usdCurr));
+returnNeighboringNumbers(5);
 
-function test() {
-   for (let i = 0; i < 5; i++) {
-      console.log(i);
-      if (i === 3) {
-         return;
+// 3. Сщздайте функцию, которая будет принимать в себя 2 аргумента, оба числа. Первое число - это база, второе число - это сколько раз нужно будет повторить это число в прогрессии (смотри пример ниже). Функция должна возвращать строку (или число в особых случаях, о которых ниже), где эти числа идут по порядку, разделенные тремя дефисами "---". После последнего числа дефисов быть не должно.Если второй аргумент не является числом, равен или меньше нуля, то возвращаем просто первый аргумент (проверяем через оператор typeof).
+function getMathResult(num, times) {
+   if (typeof(times) !== 'number' || times <= 0) {
+      return num;
+   }
+
+   let str = '';
+
+   for (let i = 1; i <= times; i++) {
+      if (i === times) {
+         str += `${num * i}`;
+            // Тут без черточек в конце
+      } else {
+         str += `${num * i}---`;
+            // Это тоже самое, что и
+            // str = str + num * i + "---"
       }
    }
-   console.log('Done');
+
+   return str;
 }
 
-test();
+getMathResult(10, 5);
 
-function doNothing() {};
-console.log(doNothing() === undefined);
