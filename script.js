@@ -1,40 +1,31 @@
 "use strict"; 
 
-// 1. Создайте функцию, которая будет на вход принимать аргумент с именем человека и возвращать строку.
-function sayHello(name) {
-   return `Привет, ${name}!`;
-}
+const str = "test";
+const arr = [1, 2, 4];
 
-sayHello('Alex');
+console.log(str.length);
+console.log(arr.length);
 
-// 2. Создайте функцию, которая принимает в себя 1 аргумент в виде целого числа и возвращает массив из трех чисел: одно на 1 меньше, сам аргумент и число на 1 больше.
-function returnNeighboringNumbers(num) {
-   return [num - 1, num, num + 1];
-}
+console.log(str.toUpperCase());
+console.log(str);
 
-returnNeighboringNumbers(5);
+console.log(str.toLowerCase());
+console.log(str);
 
-// 3. Сщздайте функцию, которая будет принимать в себя 2 аргумента, оба числа. Первое число - это база, второе число - это сколько раз нужно будет повторить это число в прогрессии (смотри пример ниже). Функция должна возвращать строку (или число в особых случаях, о которых ниже), где эти числа идут по порядку, разделенные тремя дефисами "---". После последнего числа дефисов быть не должно.Если второй аргумент не является числом, равен или меньше нуля, то возвращаем просто первый аргумент (проверяем через оператор typeof).
-function getMathResult(num, times) {
-   if (typeof(times) !== 'number' || times <= 0) {
-      return num;
-   }
+const fruit = "Some fruit";
 
-   let str = '';
+console.log(fruit.indexOf("fruit"));
 
-   for (let i = 1; i <= times; i++) {
-      if (i === times) {
-         str += `${num * i}`;
-            // Тут без черточек в конце
-      } else {
-         str += `${num * i}---`;
-            // Это тоже самое, что и
-            // str = str + num * i + "---"
-      }
-   }
+const logg = "Hello world!";
 
-   return str;
-}
+console.log(logg.slice(6, 12));
+console.log(logg.substr(6, 5));
 
-getMathResult(10, 5);
+const num = 12.2;
 
+console.log(Math.round(num));
+
+const test = "12.2px";
+
+console.log(parseInt(test));
+console.log(parseFloat(test));
