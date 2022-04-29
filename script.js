@@ -1,16 +1,32 @@
-"use strict"; 
+'use strict';
 
-const lines = 5;
-let result = '';
+const options = {
+   name: 'test',
+   width: 1024,
+   height: 1024,
+   colors: {
+      border: 'black',
+      bg: 'red'
+   }
+};
 
-for (let i = 0; i <= lines; i++) {
-   for (let j = 0; j < lines - i; j++) {
-      result += " ";
+console.log(Object.keys(options).length);
+
+let counter = 0;
+
+for (let key in options) {
+   if (typeof(options[key]) === 'object') {
+      for (let i in options[key]) {
+         console.log(`Свойство ${i} имеет значение ${options[key][i]}`);
+         counter++;
+      }
+   } else {
+      console.log(`Свойство ${key} имеет значение ${options[key]}`);
+      counter++;
    }
-    for (let j = 0; j < 2 * i + 1; j++) {
-      result += "*";
-   }
-   result += "\n";
 }
 
-console.log(result);
+console.log(counter);
+
+const {border, bg} = options.colors;
+console.log(border);
