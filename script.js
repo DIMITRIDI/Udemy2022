@@ -1,59 +1,59 @@
-'use strict';
+//Линейный поиск на JavaScript
+function LinearSearch(t,A)      // t - искомый элемент,
+{                               // A - массив, в котором ищем.
+   var n = A.length, i = 0;   
 
-const arr = [1, 2, 3, 6, 8];
+   A[n] = t;
+   
+   while (A[ i ] !== t) i++;
 
-arr.pop();
-
-console.log(arr);
-
-const arr2 = [1, 2, 3, 6, 8];
-
-arr2.push(10);
-
-console.log(arr2);
-
-const arr3 = [1, 2, 3, 6, 8];
-
-for (let i = 0; i < arr3.length; i++) {
-   console.log(arr3[i]);
+    if (i < n) return i;          // На выходе индекс искомого элемента.
+    else return -1;               // Если искомого элемента нет в массиве, то -1.
 }
 
-const arr4 = [1, 2, 3, 6, 8];
-for (let value of arr4) {
-   console.log(value);
+// Бинарный (двоичный) поиск на JavaScript
+function BinarySearch(t,A)       // t - искомый элемент,
+{                                // A - упорядоченный массив, в котором ищем.
+   var i = 0, j = A.length, k; 
+                                 
+   while (i < j)                
+   {  k = Math.floor((i+j)/2);
+      if (t <= A[k]) j = k;
+      else(i = k + 1);
+   }
+   
+    if (A[ i ] === t) return i;     // На выходе индекс искомого элемента.
+    else return -1;                 // Если искомого элемента нет в массиве, то -1.
 }
 
-const arr5 = [1, 2, 3, 6, 8];
-arr5[99] = 0;
+// Интерполирующий поиск на JavaScript
+function InterpolationSearch(t,A)          // t - искомый элемент,
+{                                          // A - упорядоченный массив, в котором ищем.
+   var mid, low = 0, high = A.length-1;
 
-console.log(arr5.length);
-console.log(arr5);
+   while (A[low] < t && A[high] > t)
+   {  mid = low + Math.floor( ((t-A[low])*(high-low))/(A[high]-A[low]) );
+      if (A[mid] < t) low = mid+1;
+      else if (A[mid] > t) high = mid-1;
+      else return mid;
+   }
 
-const arr6 = [2, 3, 6, 8, 10];
+   if (A[low] === t) return low;           // На выходе индекс искомого элемента.
+   else if (A[high] === t) return high;    // Если искомого элемента нет в массиве, то -1.
+   else return -1;
 
-arr6.forEach(function(item, i, arr6) {
-   console.log(`${i}: ${item} внутри массива ${arr6}`);
-});
-
-const str = prompt("", "");
-const products = str.split(", ");
-console.log(products);
-
-const str2 = prompt("", "");
-const products2 = str2.split(", ");
-console.log(products2.join('; '));
-
-const arr7 = [2, 23, 16, 38, 10];
-const str3 = prompt("", "");
-const products3 = str3.split(", ");
-products3.sort();
-console.log(products3.join('; '));
-
-const arr8 = [2, 23, 16, 38, 10];
-
-arr8.sort(compareNum); // сравнение чисел массива
-console.log(arr8);
-
-function compareNum(a, b) {
-   return a - b;
-}
+// Поиск подстроки на JavaScript
+function SubstringSearch(sub, str)    // sub - искомая подстрока
+{                                     // str - строка, в которой ищем
+   var i, j, n = sub.length,
+      N = str.length - n + 1;
+   
+   for (i = 0; i < N; i++) {  
+      j = 0;
+      while (j < n && sub.charAt(j) === str.charAt(i+j)) j++;
+         if (j === n) return i;
+   }                                // На выходе индекс 1-го символа подстроки.
+                                     // Если искомой подстроки нет в строке, то -1.
+   return -1;                       // Например,
+}                                    // SubstringSearch('ips', 'Lorem ipsum') = 6,
+                                     // SubstringSearch('dolor', 'Lorem ipsum') = -1.
