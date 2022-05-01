@@ -1,59 +1,115 @@
-//Линейный поиск на JavaScript
-function LinearSearch(t,A)      // t - искомый элемент,
-{                               // A - массив, в котором ищем.
-   var n = A.length, i = 0;   
+"use strict";
 
-   A[n] = t;
-   
-   while (A[ i ] !== t) i++;
+const obj = {
+   a: 5,
+   b: 1
+};
 
-    if (i < n) return i;          // На выходе индекс искомого элемента.
-    else return -1;               // Если искомого элемента нет в массиве, то -1.
-}
+const copy = obj; //Ссылка на уже существующий объект
 
-// Бинарный (двоичный) поиск на JavaScript
-function BinarySearch(t,A)       // t - искомый элемент,
-{                                // A - упорядоченный массив, в котором ищем.
-   var i = 0, j = A.length, k; 
-                                 
-   while (i < j)                
-   {  k = Math.floor((i+j)/2);
-      if (t <= A[k]) j = k;
-      else(i = k + 1);
-   }
-   
-    if (A[ i ] === t) return i;     // На выходе индекс искомого элемента.
-    else return -1;                 // Если искомого элемента нет в массиве, то -1.
-}
+copy.a = 10;
 
-// Интерполирующий поиск на JavaScript
-function InterpolationSearch(t,A)          // t - искомый элемент,
-{                                          // A - упорядоченный массив, в котором ищем.
-   var mid, low = 0, high = A.length-1;
+console.log(copy);
+console.log(obj);
 
-   while (A[low] < t && A[high] > t)
-   {  mid = low + Math.floor( ((t-A[low])*(high-low))/(A[high]-A[low]) );
-      if (A[mid] < t) low = mid+1;
-      else if (A[mid] > t) high = mid-1;
-      else return mid;
+function copy1(mainObj) {
+   let objCopy = {};
+
+   let key;
+   for (key in mainObj) {
+      objCopy[key] = mainObj[key];
    }
 
-   if (A[low] === t) return low;           // На выходе индекс искомого элемента.
-   else if (A[high] === t) return high;    // Если искомого элемента нет в массиве, то -1.
-   else return -1;
+   return objCopy;
+}
 
-// Поиск подстроки на JavaScript
-function SubstringSearch(sub, str)    // sub - искомая подстрока
-{                                     // str - строка, в которой ищем
-   var i, j, n = sub.length,
-      N = str.length - n + 1;
-   
-   for (i = 0; i < N; i++) {  
-      j = 0;
-      while (j < n && sub.charAt(j) === str.charAt(i+j)) j++;
-         if (j === n) return i;
-   }                                // На выходе индекс 1-го символа подстроки.
-                                     // Если искомой подстроки нет в строке, то -1.
-   return -1;                       // Например,
-}                                    // SubstringSearch('ips', 'Lorem ipsum') = 6,
-                                     // SubstringSearch('dolor', 'Lorem ipsum') = -1.
+const numbers = {
+   a: 2,
+   b: 5,
+   c: {
+      x: 7,
+      y: 4
+   }
+};
+
+const newNumbers = copy1(numbers); // клонирование объекта, поверхностная копия
+
+newNumbers.a = 10;
+newNumbers.c.x = 10;
+
+console.log(newNumbers);
+console.log(numbers);
+
+function copy2(mainObj) {
+   let objCopy2 = {};
+
+   let key;
+   for (key in mainObj) {
+      objCopy2[key] = mainObj[key];
+   }
+
+   return objCopy2;
+}
+
+const numbers2 = {
+   a: 2,
+   b: 5,
+   c: {
+      x: 7,
+      y: 4
+   }
+};
+
+const newNumbers2 = copy2(numbers2);
+
+newNumbers2.a = 10;
+newNumbers2.c.x = 10;
+
+console.log(newNumbers2);
+console.log(numbers2);
+
+const add = {
+   d: 17,
+   e: 20
+};
+
+console.log(Object.assign(numbers2, add));
+
+// Создадим копию массива методом slice()
+const oldArray = ['a', 'b', 'c'];
+const newArray = oldArray.slice();
+
+newArray[1] = 'adgsghfk';
+
+console.log(newArray);
+console.log(oldArray);
+
+const video = ['youtube', 'vimeo', 'rutube'],
+      blogs = ['wordpress', 'livejournal', 'blogger'],
+      internet = [...video, ...blogs, 'vk', 'facebook'];
+
+console.log(internet);
+// оператор разворота развернул массивы на отдельные элементы
+
+function log(a, b, c) {
+   console.log(a);
+   console.log(b);
+   console.log(c);
+}
+
+const num = [2, 5, 7];
+
+log(...num); // Три аргумента передаем в функцию log
+
+// Создаем копию массива с помощью спред-оператора
+const array = ["a", "b"];
+
+const newAarray = [...array];
+
+// Создаем копию объекта с помощью спред-оператора
+const q = {
+   one: 1,
+   two: 2
+};
+
+const newObj = {...q};
