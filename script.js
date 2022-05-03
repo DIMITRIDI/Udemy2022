@@ -1,23 +1,42 @@
 'use strict';
 
-const students = ['Peter', 'Andrew', 'Ann', 'Mark', 'Josh', 'Sandra', 'Cris', 'Bernard', 'Takesi', 'Sam'];
+// To string
+// 1)
+console.log(typeof(String(null)));
+console.log(typeof(String(4)));
 
-function sortStudentsByGroups(arr) {
-   arr.sort();
-   const a = [], b = [], c = [], rest = [];
+// 2)
+const num = 5;
 
-   for (let i = 0; i < arr.length; i++) {
-      if (i < 3) {
-            a.push(arr[i]);
-      } else if (i < 6) {
-            b.push(arr[i]);
-      } else if (i < 9) {
-            c.push(arr[i]);
-      } else {
-            rest.push(arr[i]);
-      }
-   }
-   return [a,b,c, `Оставшиеся студенты: ${rest.length === 0 ? '-' : rest.join(', ')}`];
+console.log("https://vk.com/catalog/" + num);
+
+const fontSize = 26 + 'px';
+
+// To Number
+// 1)
+console.log(typeof(Number(null)));
+
+// 2) unary plus
+console.log(typeof(+'5'));
+
+// 3) parseInt()
+console.log(typeof(parseInt("15px", 10)));
+
+let answ = +prompt("Hello", "");
+
+// To boolean
+// always false: 0, '', null, undefined, NaN
+// always true: (пустые переменные, пустые массивы и т.п.)
+
+// 1)
+let switcher = null;
+
+if (switcher) {
+   console.log('Working...');
 }
 
-sortStudentsByGroups(students);
+// 2)
+console.log(typeof(Boolean('4')));
+
+// 3)
+console.log(typeof(!!('4')));
