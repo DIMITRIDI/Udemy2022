@@ -1,54 +1,50 @@
+/* Задания на урок:
+
+1) Удалить все рекламные блоки со страницы (правая часть сайта)
+
+2) Изменить жанр фильма, поменять "комедия" на "драма"
+
+3) Изменить задний фон постера с фильмом на изображение "bg.jpg". Оно лежит в папке img.
+Реализовать только при помощи JS
+
+4) Список фильмов на странице сформировать на основании данных из этого JS файла.
+Отсортировать их по алфавиту 
+
+5) Добавить нумерацию выведенных фильмов */
+
 'use strict';
 
-const box = document.getElementById('box'),
-      btns = document.getElementsByTagName('button'),
-      circles = document.getElementsByClassName('circle'),
-      hearts = document.querySelectorAll('.heart'),
-      oneHeart = document.querySelector('.heart'),
-      wrapper = document.querySelector('.wrapper');
+const movieDB = {
+    movies: [
+        "Логан",
+        "Лига справедливости",
+        "Ла-ла лэнд",
+        "Одержимость",
+        "Скотт Пилигрим против..."
+    ]
+};
 
-box.style.backgroundColor = 'blue';
-box.style.width = '500px';
+const adv = document.querySelectorAll('.promo__adv img'),
+      poster = document.querySelector('.promo__bg'),
+      genre = poster.querySelector('.promo__genre'),
+      movieList = document.querySelector('.promo__interactive-list');
 
-btns[1].style.borderRadius = '100%';
-
-box.style.cssText = 'background-color: blue; width: 500px';
-
-for (let i = 0; i < hearts.length; i++) {
-   hearts[i].style.backgroundColor = 'blue';
-}
-
-hearts.forEach(item => {
-   item.style.backgroundColor = 'blue';
+adv.forEach(item => {
+   item.remove();
 });
 
-const div = document.createElement('div');
-const text = document.createTextNode('Тут был я');
+genre.textContent = 'драма';
 
-div.classList.add('black');
+poster.style.backgroundImage = 'url("img/bg.jpg")';
 
-document.body.append(div);
-document.body.append(text);
+movieList.innerHTML = "";
 
-wrapper. prepend(div);
+movieDB.movies.sort();
 
-hearts[0].after(div);
-
-circles[0].remove();
-
-hearts[0].replaceWith(circles[0]);
-
-// Команды, которые устарели
-wrapper.appendChild(div);
-
-wrapper.insertBefore(div, hearts[0]);
-
-wrapper.removeChild(hearts[1]);
-
-wrapper.replaceChild(circles[0], hearts[0]);
-
-div.innerHTML = "<h1>Hello World</h1>";
-
-div.textContent = "Hello";
-
-div.insertAdjacentHTML('afterbegin', '<h2>Hello</h2>');
+movieDB.movies.forEach((film, i) => {
+   movieList.innerHTML += `
+      <li class="promo__interactive-item">${i + 1} ${film}
+         <div class="delete"></div>
+      </li>
+   `;
+});
