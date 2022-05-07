@@ -1,30 +1,19 @@
 'use strict';
 
-let number = 5;
+function factorial(n) {
+   if (typeof(n) !== 'number' || !Number.isInteger(n)) {
+      return "Ошибка, проверьте данные";
+   }
 
-function logNumber() {
-   let number = 4;
-   console.log(number);
+   if (n >= 1) {
+        return n * factorial(n - 1);
+   } else {
+      return 1;
+   }
+
+    // Более короткий вариант, который вы можете встретить
+    // Но не учитывает отрицательные значения
+    return n ? n * factorial(n - 1) : 1;
 }
 
-number = 6;
-
-logNumber();
-
-function createCounter() {
-   let counter = 0;
-
-   const myFunction = function() { debugger
-      counter = counter + 1; debugger
-      return counter; debugger
-   };
-
-   return myFunction;
-}
-debugger
-const increment = createCounter(); debugger
-const c1 = increment(); debugger
-const c2 = increment(); debugger
-const c3 = increment(); debugger
-
-console.log(c1, c2, c3);
+factorial(5);
