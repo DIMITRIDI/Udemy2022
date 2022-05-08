@@ -1,19 +1,31 @@
 'use strict';
 
 const box = document.querySelector('.box');
+const block = document.querySelector('.block');
 
-const newHeight = 100;
-const newWidth = 400;
+console.log(block);
 
-function changeParams(elem, h, w) {
-   elem.style.height = `${h ?? 200}px`;
-   elem.style.width = `${w ?? 200}px`;
-   elem.innerHTML = (h ?? 200) * (w ?? 200);
+if (block) {
+   console.log(block.textContent); // Ошибка блокирует исполнение дальнейшего кода
+} // условие if позволяет избежать блокировки исполнения дальнейшего кода
+
+console.log(block?.textContent);
+
+console.log(1 + 2);
+
+const userData = { // Данные полученные от пользователя
+   name: 'Ivan',
+   age: null,
+   say: function () {
+      console.log('Hello');
+   }
+};
+
+userData.say();
+userData.hey?.(); // так же проверяется метод с помощью оператора ?
+
+if (userData && userData.skills && userData.skills.js) { // тольько в случае существования skills выводим в консоль
+   console.log(userData.skills.js);
 }
 
-changeParams(box, newHeight, newWidth);
-
-let userName;
-let userKey;
-
-console.log(userName ?? userKey ?? 'User');
+console.log(userData.skills?.js); // заменяем предыдущую проверку одним знаком ?
