@@ -1,28 +1,37 @@
 'use strict';
 
-const boxesQuery = document.querySelectorAll('.box');
-const boxesGet = document.getElementsByClassName('box');
+let id = Symbol("id");
 
-boxesQuery.forEach(box => {
-   if (box.matches('.this')) {
-      console.log(box); // в консоль получим конкретный элемент с классом this
+const obj = {
+   name: 'Test',
+   [id]: 1,
+   getId: function () { // метод получения id
+      return this[id];
    }
-});
+};
 
-console.log(boxesQuery[0].closest('.wrapper')); // в консоль получим родителя wrapper
-
-boxesQuery[0].remove();
-boxesGet[0].remove();
-
-for (let i = 0; i < 5; i++) {
-   const div = document.createElement('div');
-   div.classList.add('box');
-   // document.body.append(div);
-   boxesGet[boxesGet.length] = div; // ошибка новичков
+for (let value in obj) {
+   console.log(value); // в консоли получим только name (Symbol скрыто)
 }
 
-console.log(boxesQuery); // в консоли получили псевдомассив из узлов, структура имеет методы
-console.log(boxesGet); // в консоли получили псевдомассив из элементов, не имеет методов
-console.log(document.body.children);
+// let id = Symbol("id"); // Symbol всегда уникальны, даже если у них одинаковое описание
+let id2 = Symbol("id");
 
-console.log(Array.from(boxesGet)); // создаем массив из массивоподобного объекта
+console.log(id == id2); // в консоли получим false, у символов одинаковое описание, но они не равны
+
+obj[id] = 1;
+
+console.log(obj[Object.getOwnPropertySymbols(obj)[0]]);
+
+const myAwesomeDB = {
+   movies: [],
+   actors: [],
+   [Symbol.for("id")]: 123
+};
+
+// Сторонний код библиотеки
+
+myAwesomeDB.id = '2324242';
+
+console.log(myAwesomeDB[Symbol.for('id')]); // в консоль получаем 123
+console.log(myAwesomeDB); // В полученном объекте Symbol("id"): 123 - неизменен
