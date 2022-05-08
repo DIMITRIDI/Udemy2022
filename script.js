@@ -1,31 +1,28 @@
 'use strict';
 
-const box = document.querySelector('.box');
-const block = document.querySelector('.block');
+const boxesQuery = document.querySelectorAll('.box');
+const boxesGet = document.getElementsByClassName('box');
 
-console.log(block);
-
-if (block) {
-   console.log(block.textContent); // Ошибка блокирует исполнение дальнейшего кода
-} // условие if позволяет избежать блокировки исполнения дальнейшего кода
-
-console.log(block?.textContent);
-
-console.log(1 + 2);
-
-const userData = { // Данные полученные от пользователя
-   name: 'Ivan',
-   age: null,
-   say: function () {
-      console.log('Hello');
+boxesQuery.forEach(box => {
+   if (box.matches('.this')) {
+      console.log(box); // в консоль получим конкретный элемент с классом this
    }
-};
+});
 
-userData.say();
-userData.hey?.(); // так же проверяется метод с помощью оператора ?
+console.log(boxesQuery[0].closest('.wrapper')); // в консоль получим родителя wrapper
 
-if (userData && userData.skills && userData.skills.js) { // тольько в случае существования skills выводим в консоль
-   console.log(userData.skills.js);
+boxesQuery[0].remove();
+boxesGet[0].remove();
+
+for (let i = 0; i < 5; i++) {
+   const div = document.createElement('div');
+   div.classList.add('box');
+   // document.body.append(div);
+   boxesGet[boxesGet.length] = div; // ошибка новичков
 }
 
-console.log(userData.skills?.js); // заменяем предыдущую проверку одним знаком ?
+console.log(boxesQuery); // в консоли получили псевдомассив из узлов, структура имеет методы
+console.log(boxesGet); // в консоли получили псевдомассив из элементов, не имеет методов
+console.log(document.body.children);
+
+console.log(Array.from(boxesGet)); // создаем массив из массивоподобного объекта
