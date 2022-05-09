@@ -9,59 +9,52 @@ const user = {
    }
 };
 
-for (let key in user) {
-   console.log(user[key]);
+const userMap = new Map(Object.entries(user)); // Создание карты из объекта с помощью entries
+console.log(userMap);
+
+const newUserObj = Object.fromEntries(userMap); // Создание объекта
+console.log(newUserObj);
+
+console.log(typeof(Object.keys(user)[0])); // число 4 превратилось в строку
+
+const shops = [
+   {rice: 500},
+   {oil: 200},
+   {bread: 50}
+];
+
+const budget = [5000, 15000, 25000]; // данные бюджета получаем из стороннего источника
+
+const map = new Map([
+   [{paper: 400}, 8000]
+]);
+
+shops.forEach((shop, i) => {
+   map.set(shop, budget[i]);
+});
+
+console.log(map); // полная карта со структурой объектов внутри объекта, однако на самом деле это массив массивов
+console.log(map.get(shops[0])); // get - получение данных для дальнейшего взаимодействия
+console.log(map.has(shops[0])); // has - проверяет наличие чего-то внутри карты
+// map.delete(key); // удаляет что-то из карты
+// map.clear(); // полная очистка карты
+// map.size; // количество элементов внутри карты
+// map.keys();
+
+const goods = [];
+for (let shop of map.keys()) { // получаем каждый отдельный магазин с его товарами
+   goods.push(Object.keys(shop)[0]);
+}
+console.log(goods); // получили массив с товарами во всех магазинах
+
+for (let price of map.values()) {
+   console.log(price); // получили бюджеты каждого магазина
 }
 
-const arr = ['b', 'a', 'c'];
-Array.prototype.someMethod = function () {};
-
-console.dir(arr);
-
-for (let key in arr) { // получает ключ
-   console.log(key);
+for (let [shop, price] of map.entries()) {
+   console.log(shop, price);
 }
 
-for (let key of arr) { // сразу получает значение
-   console.log(key);
-}
-
-const str = 'string';
-
-for (let key in str) {
-   console.log(str[key]);
-}
-
-const salaries = {
-   john: 500,
-   ivan: 1000,
-   ann: 5000,
-   sayHello: function() {
-      console.log('Hello');
-   }
-};
-
-salaries[Symbol.iterator] = function () {
-   return {
-      current: this.john,
-      last: this.ann,
-
-      next() {
-         if (this.current < this.last) {
-            this.current = this.current + 500;
-            return {done: false, value: this.current}; // цикл еще работает
-         } else {
-            return {done: true}; // цикл завершен
-         }
-
-         // {done: true, value: 123}
-      }
-   };
-};
-
-const iterator = salaries[Symbol.iterator](); // так как это метод, мы его сразу вызываем
-console.log(iterator.next());
-
-// for (let res of salaries) {
-   // console.log(res);
-// }
+map.forEach((value, key, map) => {
+   console.log(value, key);
+});
