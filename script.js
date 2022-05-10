@@ -1,21 +1,16 @@
 'use strict';
 
-// const bigint = 1314354325436756746345634657868n; // чтоб превратить число в BigInt нужно поставить в конце числа n
+function amountOfPages(summary){
+   let result = '';
+   let n = 0;
 
-const sameBigint = BigInt(1314354325436756746345634657868);
+   for (let i = 1; i <= summary; i++) {
+      result += i;
+      if (result.length === summary) {
+         n = i;
+         break;
+      }
+   }
 
-// console.log(typeof(bigint)); // получили тип данных bigint
-
-// console.log(5n + 1); // получили ошибку
-
-// console.log(Math.round(5n)); // получили ошибку
-
-console.log(5n / 2n);
-
-console.log(2n > 5); // получим false
-
-let bigint = 1n;
-let number = 2;
-
-console.log(bigint + BigInt(number)); // конвертируем 2 в новое большое число
-console.log(Number(bigint) + number); // конвертируем bigint в обычное число
+   return n;
+}
