@@ -1,19 +1,54 @@
 'use strict';
 
-// Вариант с циклом
-function deepCount(a){
-   let count = a.length;
+const btns = document.querySelectorAll('button'),
+      wrapper = document.querySelector('.btn-block');
 
-   for (let i = 0; i < a.length; i++) {
-      if (Array.isArray(a[i])) {
-         count += deepCount(a[i]);
-      }
+console.log(btns[0].classList.length);
+
+console.log(btns[0].classList.item(0));
+
+console.log(btns[1].classList.add('red'));
+
+console.log(btns[0].classList.remove('blue'));
+
+console.log(btns[0].classList.toggle('blue'));
+
+if (btns[1].classList.contains('red')) {
+   console.log('red');
+}
+
+btns[0].addEventListener('click', () => { // кликая на кнопку 1 добавляем (удаляем) класс "red" кнопке 2
+   if (!btns[1].classList.contains('red')) {
+      btns[1].classList.add('red');
+   } else {
+      btns[1].classList.remove('red');
    }
+});
 
-   return count;
-}
+btns[1].addEventListener('click', () => { // кликая на кнопку 2 добавляем (удаляем) класс "red" кнопке 3
+   btns[2].classList.toggle('red');
+});
 
-// Вариант с методом reduce
-function deepCount(a){
-   return a.reduce((s,e)=>s+(Array.isArray(e) ? deepCount(e) : 0),a.length);
-}
+console.log(btns[0].className); // устарел, выдает строку с классами с которой неудобно работать
+
+wrapper.addEventListener('click', (event) => {
+   if (event.target && event.target.tagName == "BUTTON") {
+      console.log('Hello');
+   }
+});
+
+const btn = document.createElement('button');
+btn.classList.add('red');
+wrapper.append(btn); // поместим btn во wrapper
+
+btns.forEach(btn => {
+   btn.addEventListener('click', () => {
+      console.log('Hi!');
+   });
+});
+
+wrapper.addEventListener('click', (event) => {
+   if (event.target && event.target.matches("button.red") ) {
+      console.log('Hello');
+   }
+});
