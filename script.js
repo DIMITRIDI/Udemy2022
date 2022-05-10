@@ -1,60 +1,33 @@
 'use strict';
 
-const user = {
-   name: 'Alex',
-   surname: 'Smith',
-   birthday: '20/04/1993',
-   showMyPublicData: function () {
-      console.log(`${this.name} ${this.surname}`);
-   }
-};
+const arr = ['Alex', 'Ann', 'Oleg', 'Alex'];
 
-const userMap = new Map(Object.entries(user)); // Создание карты из объекта с помощью entries
-console.log(userMap);
+function unique(arr) {
+   return Array.from(new Set(arr)); // создаем массив из Set
+}
 
-const newUserObj = Object.fromEntries(userMap); // Создание объекта
-console.log(newUserObj);
+console.log(unique(arr));
 
-console.log(typeof(Object.keys(user)[0])); // число 4 превратилось в строку
+const set = new Set(arr);
 
-const shops = [
-   {rice: 500},
-   {oil: 200},
-   {bread: 50}
-];
+set.add('Ivan'); // добавление данных в Set
+set.add('Oleg'); // второй Oleg в Set добавится не может
 
-const budget = [5000, 15000, 25000]; // данные бюджета получаем из стороннего источника
+console.log(set); // в консоли получаем Set без повторений данных
 
-const map = new Map([
-   [{paper: 400}, 8000]
-]);
+// set.delete(value); // удаление значений из Set
+// set.has(value); // проверять значения
+// set.clear(value); // очистка набора
+// set.size; // проверять размер Set
 
-shops.forEach((shop, i) => {
-   map.set(shop, budget[i]);
+for (let value of set) {
+   console.log(value);
+}
+
+set.forEach((value, valueAgaing, set) => {
+   console.log(value, valueAgaing);
 });
 
-console.log(map); // полная карта со структурой объектов внутри объекта, однако на самом деле это массив массивов
-console.log(map.get(shops[0])); // get - получение данных для дальнейшего взаимодействия
-console.log(map.has(shops[0])); // has - проверяет наличие чего-то внутри карты
-// map.delete(key); // удаляет что-то из карты
-// map.clear(); // полная очистка карты
-// map.size; // количество элементов внутри карты
-// map.keys();
-
-const goods = [];
-for (let shop of map.keys()) { // получаем каждый отдельный магазин с его товарами
-   goods.push(Object.keys(shop)[0]);
-}
-console.log(goods); // получили массив с товарами во всех магазинах
-
-for (let price of map.values()) {
-   console.log(price); // получили бюджеты каждого магазина
-}
-
-for (let [shop, price] of map.entries()) {
-   console.log(shop, price);
-}
-
-map.forEach((value, key, map) => {
-   console.log(value, key);
-});
+   console.log(set.values()); // выводит значения коллекции
+   set.keys(); //метод существует для обратной совместимости с Map, у коллекции Set ключей нет
+   set.entries(); //метод также существует для обратной совместимости с Map
