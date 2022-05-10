@@ -1,33 +1,21 @@
 'use strict';
 
-const arr = ['Alex', 'Ann', 'Oleg', 'Alex'];
+// const bigint = 1314354325436756746345634657868n; // чтоб превратить число в BigInt нужно поставить в конце числа n
 
-function unique(arr) {
-   return Array.from(new Set(arr)); // создаем массив из Set
-}
+const sameBigint = BigInt(1314354325436756746345634657868);
 
-console.log(unique(arr));
+// console.log(typeof(bigint)); // получили тип данных bigint
 
-const set = new Set(arr);
+// console.log(5n + 1); // получили ошибку
 
-set.add('Ivan'); // добавление данных в Set
-set.add('Oleg'); // второй Oleg в Set добавится не может
+// console.log(Math.round(5n)); // получили ошибку
 
-console.log(set); // в консоли получаем Set без повторений данных
+console.log(5n / 2n);
 
-// set.delete(value); // удаление значений из Set
-// set.has(value); // проверять значения
-// set.clear(value); // очистка набора
-// set.size; // проверять размер Set
+console.log(2n > 5); // получим false
 
-for (let value of set) {
-   console.log(value);
-}
+let bigint = 1n;
+let number = 2;
 
-set.forEach((value, valueAgaing, set) => {
-   console.log(value, valueAgaing);
-});
-
-   console.log(set.values()); // выводит значения коллекции
-   set.keys(); //метод существует для обратной совместимости с Map, у коллекции Set ключей нет
-   set.entries(); //метод также существует для обратной совместимости с Map
+console.log(bigint + BigInt(number)); // конвертируем 2 в новое большое число
+console.log(Number(bigint) + number); // конвертируем bigint в обычное число
