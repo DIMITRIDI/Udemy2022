@@ -1,36 +1,52 @@
-function func() {
-   window.smth = 'string'; // создание лишней глобальной переменной
-}
+'use strict';
 
-const someRes = getData();
-const node = document.querySelector('.class');
+let user = {name: 'Ivan'};
 
-setInterval(function() {
-   if (node) {
-      node.innerHTML = someRes;
+const arr = [user]; // пока массив существует - объект тоже будет существовать в памяти
+user = null;
+
+console.log(user);
+console.log(arr[0]); // объект доступен и хранится в памяти
+
+let map = new WeakMap(); // создаем слабую карту с помощью WeakMap
+// WeakMap сообщает сборщику мусора об удалении объекта, так как он не используется
+user = null; 
+
+console.log(map.has(user)); // получаем false значит объект был удален автоматически
+console.log(map); // в консоли получим "нет никаких свойств"
+
+let cache = new WeakMap();
+
+function cacheUser(user) {
+   if (!cache.has(user)) { // если пользователя нет в кэше
+      cache.set(user, Date.now()); // то его добавим
    }
-}, 1000); // не забывайте останавливать ненужные таймеры, происходит утечка памяти
 
-function outer() {
-   const potentiallyHugeArray = [];
-   return function inner() {
-      potentiallyHugeArray.push('Hello');
-      console.log('Hello!!');
-   };
+   return cache.get(user); // получаем пользователя
 }
 
-const sayHello = outer(); // в переменной sayHello содержится ссылка на огромный массив potentiallyHugeArray
+let lena = {name: 'Elena'};
+let alex = {name: 'Alex'};
+// оба пользователя зашли в чат
+cacheUser(lena);
+cacheUser(alex);
 
-function createElement() {
-   const div = document.createElement('div');
-   div.id = 'test';
-   document.body.append(testDiv);
-}
+lena = null; // вышла из чата
 
-createElement(); // в переменной testDiv лежит блок с установлнным id
+console.log(cache.has(lena)); // false - удалена из памяти после выхода из чата
+console.log(cache.has(alex)); // true - остается в кэше
 
-function deleteElement() {
-   document.body.removeChild(document.getElementById('test'));
-}
+let messages = [
+   {text: 'Hello', from: 'John'},
+   {text: 'World', from: 'Alex'},
+   {text: '!!!!!', from: 'Mary'},
+];
 
-deleteElement();
+let readMessages = new WeakSet();
+
+readMessages.add(messages[0]); // добавим новое сообщение как прочитанное
+// readMessages.add(messages[1]); // добавим новое сообщение как прочитанное
+
+readMessages.add(messages[0]); // как и обычный Set не дублирует уникальные данные
+messages.shift(); // false - удалили объект из памяти
+console.log(readMessages.has(messages[0])); // true - значит сообщение находится в WeakSet
