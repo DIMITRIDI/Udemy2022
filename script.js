@@ -1,52 +1,27 @@
 'use strict';
 
-let user = {name: 'Ivan'};
+const now = new Date(0);
 
-const arr = [user]; // пока массив существует - объект тоже будет существовать в памяти
-user = null;
+console.log(now); // отсчет времени ведется в мсек от даты 1970-01-01T00:00:00.000
 
-console.log(user);
-console.log(arr[0]); // объект доступен и хранится в памяти
+console.log(now.getFullYear()); // получаем год
+console.log(now.getMonth()); // получаем месяц
+console.log(now.getDate()); // получаем определенный день месяца
+console.log(now.getDay()); // получаем определенный день недели (0 – воскресенье, … 6 – суббота)
+console.log(now.getUTCHours()); // получение по общемировому времени
+console.log(now.getTimezoneOffset()); // показывает разницу между часовым поясом и общемировым временем
+console.log(now.getTime()); // количество мсек после 1970 года
 
-let map = new WeakMap(); // создаем слабую карту с помощью WeakMap
-// WeakMap сообщает сборщику мусора об удалении объекта, так как он не используется
-user = null; 
+// const now1 = new Date('2022-05-12');
+//      new Date.parse('2022-05-12');
 
-console.log(map.has(user)); // получаем false значит объект был удален автоматически
-console.log(map); // в консоли получим "нет никаких свойств"
+let start = new Date();
 
-let cache = new WeakMap();
-
-function cacheUser(user) {
-   if (!cache.has(user)) { // если пользователя нет в кэше
-      cache.set(user, Date.now()); // то его добавим
-   }
-
-   return cache.get(user); // получаем пользователя
+for (let i = 0; i < 100000; i++) {
+   let some = i ** 3;
 }
 
-let lena = {name: 'Elena'};
-let alex = {name: 'Alex'};
-// оба пользователя зашли в чат
-cacheUser(lena);
-cacheUser(alex);
+let end = new Date();
 
-lena = null; // вышла из чата
-
-console.log(cache.has(lena)); // false - удалена из памяти после выхода из чата
-console.log(cache.has(alex)); // true - остается в кэше
-
-let messages = [
-   {text: 'Hello', from: 'John'},
-   {text: 'World', from: 'Alex'},
-   {text: '!!!!!', from: 'Mary'},
-];
-
-let readMessages = new WeakSet();
-
-readMessages.add(messages[0]); // добавим новое сообщение как прочитанное
-// readMessages.add(messages[1]); // добавим новое сообщение как прочитанное
-
-readMessages.add(messages[0]); // как и обычный Set не дублирует уникальные данные
-messages.shift(); // false - удалили объект из памяти
-console.log(readMessages.has(messages[0])); // true - значит сообщение находится в WeakSet
+alert(`Цикл отработал за ${end - start} милисекунд`);
+// метод для измерения скорости отработки цикла
