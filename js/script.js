@@ -41,11 +41,21 @@ window.addEventListener('DOMContentLoaded', () => {
    const deadLine = '2022-12-31';
 
    function getTimeRemaining(endtime) { // получаем разницу между дедлайн и текущей датой в милисекундах
-      const t = Date.parse(endtime) - Date.parse(new Date()),
-            days = Math.floor(t / (1000 * 60 * 60 * 24)), // полученную разницу в миллисекундах преобразовываем в дни
-            hours = Math.floor((t / (1000 * 60 * 60) % 24)), // полученную разницу в миллисекундах преобразов в часы
-            minutes = Math.floor((t / 1000 / 60) % 60), // полученную разницу в миллисекундах преобразовываем в минуты
-            seconds = Math.floor((t / 1000) % 60); // полученную разницу в миллисекундах преобразовываем в секунды
+      let days, hours, minutes, seconds;
+      const t = Date.parse(endtime) - Date.parse(new Date());
+
+      if (t <= 0) {
+         days = 0;
+         hours = 0;
+         minutes = 0;
+         seconds = 0;
+      } else {
+         days = Math.floor(t / (1000 * 60 * 60 * 24)), // полученную разницу в миллисекундах преобразовываем в дни
+         seconds = Math.floor((t / 1000) % 60), // полученную разницу в миллисекундах преобразовываем в секунды
+         minutes = Math.floor((t / 1000 / 60) % 60), // полученную разницу в миллисекундах преобразовываем в минуты
+         hours = Math.floor((t / (1000 * 60 * 60) % 24)); // полученную разницу в миллисекундах преобразов в часы
+      }
+
       return { // возвращаем объект
          'total': t,
          'days': days,
@@ -62,7 +72,6 @@ window.addEventListener('DOMContentLoaded', () => {
          return num;
       }
    }
-
 
       function setClock(selector, endtime) { // установим часы на странице
       const timer = document.querySelector(selector),
