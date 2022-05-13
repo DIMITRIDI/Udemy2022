@@ -101,4 +101,40 @@ window.addEventListener('DOMContentLoaded', () => {
 
    setClock('.timer', deadLine);
 
+// modal
+   const modalTrigger = document.querySelectorAll('[data-modal]'),
+         modal = document.querySelector('.modal'),
+         modalCloseBtn = document.querySelector('[data-close]');
+
+   modalTrigger.forEach(btn => { // перебираем псевдомассив для всех кнопок btn
+      btn.addEventListener('click', () => {
+         modal.classList.add('show');
+         modal.classList.remove('hide');
+         document.body.style.overflow = 'hidden';
+      });
+   });
+   
+      function closeModal() {
+      modal.classList.add('hide');
+      modal.classList.remove('show');
+      // modal.classList.toggle('show');
+      document.body.style.overflow = '';
+   }
+
+   modalCloseBtn.addEventListener('click', closeModal); // closeModal передаем
+
+   modal.addEventListener('click', (e) => { // Закрытие модального окна по клику в любую точку или на кнопку Esc
+      if (e.target === modal) { // если клик происходит по modal, то закрываем модальное окно
+         closeModal(); // closeModal вызываем
+      }
+   });
+
+   document.addEventListener('keydown', (e) => { // При нажатии на Esc вызывается closeModal закрывающая модальное окно
+      if (e.code === "Escape" && modal.classList.contains('show')) {
+      // добавляем условие чтоб Esc не срабатывало когда модальное окно закрыто
+         closeModal();
+      }
+   });
+
+
 });
