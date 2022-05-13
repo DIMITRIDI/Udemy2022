@@ -106,15 +106,19 @@ window.addEventListener('DOMContentLoaded', () => {
          modal = document.querySelector('.modal'),
          modalCloseBtn = document.querySelector('[data-close]');
 
+   function openModal() { 
+      modal.classList.add('show');
+      modal.classList.remove('hide');
+      // modal.classList.toggle('show');
+      document.body.style.overflow = 'hidden';
+      clearInterval(modalTimerId); // если пользователь сам открыл modal, то очищаем modalTimerId
+   }
+
    modalTrigger.forEach(btn => { // перебираем псевдомассив для всех кнопок btn
-      btn.addEventListener('click', () => {
-         modal.classList.add('show');
-         modal.classList.remove('hide');
-         document.body.style.overflow = 'hidden';
-      });
+      btn.addEventListener('click', openModal);
    });
    
-      function closeModal() {
+   function closeModal() {
       modal.classList.add('hide');
       modal.classList.remove('show');
       // modal.classList.toggle('show');
@@ -136,5 +140,17 @@ window.addEventListener('DOMContentLoaded', () => {
       }
    });
 
+   const modalTimerId = setTimeout(openModal, 5000); // вызов modal через 5 сек после открытия сайта
+
+   function showModalByScrol() {
+      if (window.pageYOffset + document.documentElement.clientHeight >= document.documentElement.scrollHeight - 1) {
+      // прокрутка страницы + видимая на мониторе окно страницы >= scrollHeight - значит пользователь долистал до конца
+         openModal();
+         window.removeEventListener('scroll', showModalByScrol); 
+         // после появления modal удаляем showModalByScrol чтоб modal больше не появлялось при прокрутке до конца
+      }
+   }
+
+   window.addEventListener('scroll', showModalByScrol); //если пользователь долистал до конца страницы, показываем modal
 
 });
