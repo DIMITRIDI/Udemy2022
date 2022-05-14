@@ -101,23 +101,6 @@ window.addEventListener('DOMContentLoaded', () => {
 
    setClock('.timer', deadLine);
 
-<<<<<<< HEAD
-// Modal
-   const modalTrigger = document.querySelector('[data-modal]'),
-         modal = document.querySelector('.modal'),
-         modalCloseBtn = document.querySelector('[data-close]');
-
-   modalTrigger.addEventListener('click', () => {
-      modal.classList.add('show');
-      modal.classList.remove('hide');
-   });
-
-   modalCloseBtn.addEventListener('click', () => {
-      modal.classList.add('hide');
-      modal.classList.remove('show');
-   });
-
-=======
 // modal
    const modalTrigger = document.querySelectorAll('[data-modal]'),
          modal = document.querySelector('.modal'),
@@ -170,5 +153,65 @@ window.addEventListener('DOMContentLoaded', () => {
 
    window.addEventListener('scroll', showModalByScrol); //если пользователь долистал до конца страницы, показываем modal
 
->>>>>>> 6f0f2f621e3e209e6bfe48ed609a5ca99d30dd27
+   // используем классы для карточек
+   class MenuCard {
+      constructor(src, alt, title, descr, price, parentSelector) {
+         this.src = src;
+         this.alt = alt;
+         this.title = title;
+         this.descr = descr;
+         this.price = price;
+         this.parent = document.querySelector(parentSelector); // родитель, куда передаем верстку
+         this.transfer = 27; // пока статический курс валют
+         this.changeToUAH(); // метод вызываем прямо в конструкторе
+      }
+
+      changeToUAH() { // метод для конвертации гривны в доллар
+         this.price = this.price * this.transfer;
+      }
+
+      render() { // метод для формирования верстки
+         const element = document.createElement('div'); // создаем элемент
+         element.innerHTML = `
+            <div class="menu__item">
+               <img src=${this.src} alt=${this.alt}>
+               <h3 class="menu__item-subtitle">${this.title}</h3>
+               <div class="menu__item-descr">${this.descr}</div>
+               <div class="menu__item-divider"></div>
+               <div class="menu__item-price">
+                  <div class="menu__item-cost">Цена:</div>
+                  <div class="menu__item-total"><span>${this.price}</span> грн/день</div>
+               </div>
+            </div>
+         `;
+         this.parent.append(element);
+      }
+   }
+
+   new MenuCard(
+      "img/tabs/vegy.jpg",
+      "vegy",
+      "Меню 'Фитнес'",
+      "Меню 'Фитнес' - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством массового потребления!",
+      9,
+      ".menu .container"
+   ).render(); // вызываем класс MenuCard и передаем в него аргументы
+
+   new MenuCard(
+      "img/tabs/elite.jpg",
+      "elite",
+      "Меню 'Премиум'",
+      "В меню 'Премиум' мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд лучшими нашими поварами. Красная рыба, морепродукты, овощи, грибы, фрукты - ресторанное меню без похода в ресторан!",
+      14,
+      ".menu .container"
+   ).render(); // вызываем класс MenuCard и передаем в него аргументы
+
+   new MenuCard(
+      "img/tabs/post.jpg",
+      "post",
+      "Меню 'Постное'",
+      "Меню 'Постное' - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.",
+      21,
+      ".menu .container"
+   ).render(); // вызываем класс MenuCard и передаем в него аргументы
 });
