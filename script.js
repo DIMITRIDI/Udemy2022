@@ -1,36 +1,39 @@
 'use strict';
 
-const box = document.querySelector('.box');
+class Rectangle {
+   constructor(height, width) { // height, width получаем из сервера
+      this.height = height;
+      this.width = width;
+   }
 
-const width = box.clientWidth;
-const height = box.clientHeight; // ширина (высота) объекта без бордеров и прокрутки
+   calcArea() { // метод calcArea для подсчета площади
+      return this.height * this.width;
+   }
+}
 
-console.log(width, height); // в консоль получим 383 и 333
+const square = new Rectangle(10, 10); // в переменной square лежит объект, в котором свойства (height, width) и метод calcArea
+const long = new Rectangle(20, 100); // создадим еще одну фигуру - прямоугольник
 
-const width1 = box.offsetWidth;
-const height1 = box.offsetHeight; // ширина (высота) объекта с бордерами, прокруткой, маржином и педингом
+console.log(square.calcArea());
+console.log(long.calcArea());
 
-console.log(width1, height1); // в консоль получим 400 и 350
+// Принципы объектно-ориентированного программирования:
+// 1.	Абстракция – отделение концепции от ее экземпляра. (шаблон и экземпляры)
+// 2.	Наследование – способность нашего объекта (класса) базироваться на другом объекте (классе).
 
-const width2 = box.scrollWidth;
-const height2 = box.scrollHeight; // высота и ширина объекта с учетом прокруток (само поле прокрутки не учитывается)
+class ColoredRectangleWithText extends Rectangle { // extends - наследование от класса Rectangle
+   constructor(height, width, text, bgColor) {
+      super(height, width); // super - вызывает суперконструкор родителя (всегда на 1 строке в конструкторе)
+      this.text = text;
+      this.bgColor = bgColor;
+   }
 
-console.log(width2, height2); // в консоль получим 383 и 1352
+      showMyProps() {
+      console.log(`Текст: ${this.text}, цвет: ${this.bgColor}`);
+   }
+}
 
-const box1 = document.querySelector('.box'), // после клика на btn устанавливаем полную высоту box
-      btn = document.querySelector('button');
+const div = new ColoredRectangleWithText(25, 10, 'Hello', 'red');
 
-   btn.addEventListener('click', () => {
-   // box1.style.height = box1.scrollHeight + 'px';
-   console.log(box.scrollTop); // в консоли получаем сколько объект прокручен вверх или влево
-});
-
-console.log(box.getBoundingClientRect()); // getBoundingClientRect получает все координаты, которые есть у элемента
-
-console.log(box.getBoundingClientRect().top); // получить только одно значение top
-
-// Как получить стили, которые уже были применены при помощи css
-
-const style = window.getComputedStyle(box);
-
-console.log(style.display);
+div.showMyProps();
+console.log(div.calcArea());
