@@ -1,13 +1,26 @@
 'use strict';
 
-const log = function(a, b, ...rest) { // Rest оператор – собрал отдельные элементы в один массив
-   console.log();
+const persone = {
+   name: 'Alex',
+   tel: '+74444444'
 };
 
-log('basic', 'rest', 'operator', 'usage');
+console.log(JSON.stringify(persone));
 
-function calcOrDouble(number, basis = 2) { // Параметру по умолчанию (basis) присвоим 2
-   console.log(number * basis);
-}
+console.log(JSON.parse(JSON.stringify(persone)));
 
-calcOrDouble(3); // второй аргумент задается по умолчанию
+const persone1 = {
+   name: 'Alex',
+   tel: '+74444444',
+   parents: {
+      mom: 'Olga',
+      dad: 'Mike'
+   }
+};
+
+const clone = JSON.parse(JSON.stringify(persone1));
+
+clone.parents.mom = 'Ann';
+
+console.log(persone1);
+console.log(clone);
