@@ -248,33 +248,28 @@ window.addEventListener('DOMContentLoaded', () => {
          // выводим сообщение о загрузке loading на страницу пользователя
          form.insertAdjacentElement('afterend', statusMessage);
 
-         const request = new XMLHttpRequest();
-         request.open('POST', 'server.php');
-
-         // request. setRequestHeader('Content-type', 'multipart/form-data'); // настраиваем заголовки
-         // request. setRequestHeader('Content-type', 'application/json'); // если сервер принимает данные в формате JSON
          const formData = new FormData(form); // FormData - быстрое формирование данных заполненных пользователем
 
-         // const object = {}; // если сервер принимает данные в формате JSON
-         // formData.forEach(function(value, key) {
-         //    object[key] = value;
-         // });
+         const object = {};
+         formData.forEach(function(value, key) {
+            object[key] = value;
+         });
 
-         // const json = JSON.stringify(object);
-
-         // request.send(json);
-
-         request.send(formData); // отправляем форму
-
-         request.addEventListener('load', () => { // отслеживаем load - конечную загрузку формы
-            if (request.status === 200) { // если запрос успешно прошел
-               console.log(request.response);
-               showThanksModal(message.success); // показываем пользователю что загрузка произошла успешно
-               form.reset(); // очищаем форму после отправки данных
-               statusMessage.remove();
-            } else {
-               showThanksModal(message.failure); // или имеются какие-то проблемы
-            }
+         fetch('server.php', {
+            method: "POST",
+            headers: {
+               'Content-type': 'application/json'
+            },
+            body: JSON.stringify(object)
+         }) .then(data => data.text() )
+            .then(data => {
+            console.log(data); // выводим в консоль то что вернул сервер
+            showThanksModal(message.success);
+            statusMessage.remove(); // удаляем спинер
+         }).catch(() => { // обрабатываем ошибки
+            showThanksModal(message.failure);
+         }).finally(() => {
+            form.reset();
          });
       });
    }
