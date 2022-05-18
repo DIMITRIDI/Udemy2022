@@ -1,62 +1,58 @@
 'use strict';
 
-// filter() - фильтрует массив
-const names = ['Ivan', 'Ann', 'Ksenia', 'Voldemart'];
+const films = [
+   {
+      name: 'Titanic',
+      rating: 9
+   },
+   {
+      name: 'Die hard 5',
+      rating: 5
+   },
+   {
+      name: 'Matrix',
+      rating: 8
+   },
+   {
+      name: 'Some bad film',
+      rating: 4
+   }
+];
 
-const shortNames = names.filter(function(name) { // получим массив имен менее 5 букв
-   return name.length < 5;
-});
+function showGoodFilms(arr) {
+   return arr.filter(film => film.rating >= 8);
+}
 
-console.log(shortNames);
+showGoodFilms(films);
 
-// map() - возвращает новый измененный массив
-const ansvers = ['IvAn', 'AnnA', 'Hello']; // получим массив, где все строки в нижнем регистре
+function showListOfFilms(arr) {
+   return arr.reduce((acc, curr) =>`${typeof(acc) === 'object' ? acc.name : acc}, ${curr.name}`);
+}
 
-const result = ansvers.map(item => item.toLowerCase());
+showListOfFilms(films);
 
-console.log(result);
+function setFilmsIds(arr) {
+   return arr.map((film, i) => {
+      film.id = i;
+      return film;
+   });
+}
 
-let ansvers1 = ['IvAn', 'AnnA', 'Hello']; // вариант перезаписи массива без назначения новой переменной
+const tranformedArray = setFilmsIds(films);
 
-ansvers1 = ansvers1.map(item => item.toLowerCase());
+// При срабатывании every на первом фильме он натыкается на id = 0;
+// 0 - это неправда в логическом ключе, поэтому и весь метод возвращает false
+// Учитывайте этот момент
+function checkFilms(arr) {
+   return arr.every(film => film.id || film.id === 0 ? true : false);
+}
 
-console.log(ansvers1);
+// Еще короче, так как условие все равне вернет true или false:
+// function checkFilms(arr) {
+//     return arr.every(film => film.id || film.id === 0)
+// }
 
-// every()/some()
-const someOut = [4, 'qvq', 'strefert']; // есть ли в массиве хоть одно число
+// Максимально коротко, но еще читаемо:
+// const checkFilms = (arr) => arr.every(film => film.id || film.id === 0)
 
-console.log(someOut.some(item => typeof(item) === 'number')); // получим true
-
-console.log(someOut.every(item => typeof(item) === 'number')); // все элементы подходят под условие, тогда вернет true
-
-// reduce - схлопывает (собирает) массив в одно единое целое
-const arr = [4, 5, 1, 3, 2, 6];
-                  // 0        4
-                  // 4        5
-                  // 9        1
-                  // 10       3...
-
-const res = arr.reduce((sum, current) => sum + current);
-console.log(res);
-
-const arr1 = ['apple', 'pear', 'plum'];
-
-const res1 = arr1.reduce((sum, current) => `${sum}, ${current}`);
-console.log(res1);
-
-const arr2 = [4, 5, 1, 3, 2, 6];
-
-const res2 = arr2.reduce((sum, current) => sum + current, 3);
-console.log(res2); // reduse может принимать еще один аргумент, где 3 - начальное значение для вычислений
-
-const obj = { // Необходимо получить имена людей из этого объекта
-   ivan: 'persone',
-   ann: 'persone',
-   dog: 'animal',
-   cat: 'animal'
-};
-
-const newArr = Object.entries(obj) // получим массив массивов
-.filter(item => item[1] === 'persone') // получаем массив с 'persone'
-.map(item => item[0]); // из массивов с 'persone' выделяем первые элементы
-console.log(newArr);
+checkFilms(tranformedArray);
