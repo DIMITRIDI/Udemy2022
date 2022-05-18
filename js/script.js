@@ -298,4 +298,8 @@ window.addEventListener('DOMContentLoaded', () => {
       }, 4000);
    }
 
+   fetch('http://localhost:3000/menu') // получим базу данных из файла db.json
+      .then(data => data.json())
+      .then(res => console.log(res));
+
 });
