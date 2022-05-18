@@ -192,35 +192,48 @@ window.addEventListener('DOMContentLoaded', () => {
       }
    }
 
-   new MenuCard(
-      "img/tabs/vegy.jpg",
-      "vegy",
-      "Меню 'Фитнес'",
-      "Меню 'Фитнес' - это новый подход к приготовлению блюд: больше свежих овощей и фруктов. Продукт активных и здоровых людей. Это абсолютно новый продукт с оптимальной ценой и высоким качеством массового потребления!",
-      9,
-      ".menu .container",
-      "menu__item"
-   ).render(); // вызываем класс MenuCard и передаем в него аргументы
+   const getResource = async (url) => { // делаем запрос
+      const res = await fetch(url); // дожидаемся окончания запроса
+      
+      if (!res.ok) { // если что-то пошло не так
+         throw new Error(`Could not fetch ${url}, status: ${res.status}`);
+      }
 
-   new MenuCard(
-      "img/tabs/elite.jpg",
-      "elite",
-      "Меню 'Премиум'",
-      "В меню 'Премиум' мы используем не только красивый дизайн упаковки, но и качественное исполнение блюд лучшими нашими поварами. Красная рыба, морепродукты, овощи, грибы, фрукты - ресторанное меню без похода в ресторан!",
-      14,
-      ".menu .container",
-      "menu__item"
-   ).render(); // вызываем класс MenuCard и передаем в него аргументы
+      return await res.json(); // трансформируем данные в JS объект
+   };
 
-   new MenuCard(
-      "img/tabs/post.jpg",
-      "post",
-      "Меню 'Постное'",
-      "Меню 'Постное' - это тщательный подбор ингредиентов: полное отсутствие продуктов животного происхождения, молоко из миндаля, овса, кокоса или гречки, правильное количество белков за счет тофу и импортных вегетарианских стейков.",
-      21,
-      ".menu .container",
-      "menu__item"
-   ).render(); // вызываем класс MenuCard и передаем в него аргументы
+      getResource('http://localhost:3000/menu') // получаем массив с сервера
+      .then(data => {
+         data.forEach(({img, altimg, title, descr, price}) => { // объект деструктуризируем
+            new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
+            // создаем новую карточку на странице и ее рендерим
+         });
+      });
+
+      // 2 вариант
+      // getResource('http://localhost:3000/menu')
+      //    .then(data => createCard(data));
+      
+      // function createCard(data) {
+      //    data.forEach(({img, altimg, title, descr, price}) => {
+      //       const element = document.createElement('div');
+
+      //       element.classList.add('menu__item');
+
+      //       element.innerHTML = `
+      //          <img src=${img} alt=${altimg}>
+      //          <h3 class="menu__item-subtitle">${title}</h3>
+      //          <div class="menu__item-descr">${descr}</div>
+      //          <div class="menu__item-divider"></div>
+      //          <div class="menu__item-price">
+      //             <div class="menu__item-cost">Цена:</div>
+      //             <div class="menu__item-total"><span>${price}</span> грн/день</div>
+      //          </div>
+      //       `;
+
+      //       document.querySelector('.menu .container').append(element);
+      //    });
+      // }
 
    // Forms
    const forms = document.querySelectorAll('form');
@@ -232,10 +245,22 @@ window.addEventListener('DOMContentLoaded', () => {
    };
 
    forms.forEach(item => { // Самое главное взять все наши формы и под каждую подвязать функцию postData
-      postData(item);
+      bindPostData(item);
    });
 
-   function postData(form) {
+   const postData = async (url, data) => { // настройка запроса
+      const res = await fetch(url, { // посылает запрос на сервер
+         method: "POST",
+         headers: {
+            'Content-type': 'application/json'
+         },
+         body: data // получает ответ от сервера
+      });
+
+      return await res.json(); // трансформирует ответ от сервера в JSON (возвращаем промис)
+   };
+
+   function bindPostData(form) {
       form.addEventListener('submit', (e) => {
          e.preventDefault(); // отмена стандартной работы браузера с перезагрузкой страницы
 
@@ -250,19 +275,10 @@ window.addEventListener('DOMContentLoaded', () => {
 
          const formData = new FormData(form); // FormData - быстрое формирование данных заполненных пользователем
 
-         const object = {};
-         formData.forEach(function(value, key) {
-            object[key] = value;
-         });
-
-         fetch('server.php', {
-            method: "POST",
-            headers: {
-               'Content-type': 'application/json'
-            },
-            body: JSON.stringify(object)
-         }) .then(data => data.text() )
-            .then(data => {
+         const json = JSON.stringify(Object.fromEntries(formData.entries()));
+         // formData превращаем в массив массивов, потом в объект, который превращаем в JSON
+         postData('http://localhost:3000/requests', json) // отправляем json на сервер
+         .then(data => {
             console.log(data); // выводим в консоль то что вернул сервер
             showThanksModal(message.success);
             statusMessage.remove(); // удаляем спинер
