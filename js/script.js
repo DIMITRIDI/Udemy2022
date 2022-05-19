@@ -202,13 +202,21 @@ window.addEventListener('DOMContentLoaded', () => {
       return await res.json(); // трансформируем данные в JS объект
    };
 
-      getResource('http://localhost:3000/menu') // получаем массив с сервера
+   getResource('http://localhost:3000/menu') // получаем массив с сервера
       .then(data => {
          data.forEach(({img, altimg, title, descr, price}) => { // объект деструктуризируем
             new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
             // создаем новую карточку на странице и ее рендерим
          });
       });
+
+   // подключение к серверу через библиотеку axios
+   // axios.get('http://localhost:3000/menu')
+   //    .then(data => {
+   //       data.data.forEach(({img, altimg, title, descr, price}) => {
+   //          new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
+   //       });
+   //    });
 
       // 2 вариант
       // getResource('http://localhost:3000/menu')
