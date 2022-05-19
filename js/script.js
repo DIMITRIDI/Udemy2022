@@ -328,53 +328,127 @@ window.addEventListener('DOMContentLoaded', () => {
    //    .then(res => console.log(res));
 
    // slider
+   // const slides = document.querySelectorAll('.offer__slide'),
+   //    prev = document.querySelector('.offer__slider-prev'),
+   //    next = document.querySelector('.offer__slider-next'),
+   //    total = document.querySelector('#total'),
+   //    current = document.querySelector('#current');
+   // let slideIndex = 1;
+
+   // showSlides(slideIndex);
+
+   // if (slides.length < 10) { // если количество слайдов меньше 10,
+   //    total.textContent = `0${slides.length}`; // то добавляем 0 к номеру слайда
+   // } else { // если количество слайдов больше 10, 
+   //    total.textContent = slides.length; // то добавляем только количество слайдов
+   // }
+
+   // function showSlides(n) {
+   //    if (n > slides.length) {
+   //       slideIndex = 1; // Если slides достигло максимума, то перемещаемся на первый slideIndex = 1
+   //    }
+
+   //    if (n < 1) { // Если слайд перемещается на менее 1, то перемещаемся на последний слайд
+   //       slideIndex = slides.length;
+   //    }
+
+   //    slides.forEach(item => item.style.display = 'none'); // скрываем все слайды
+
+   //    slides[slideIndex - 1].style.display = 'block'; // показываем активный
+
+   //    if (slides.length < 10) {
+   //       current.textContent = `0${slideIndex}`; // slideIndex - текущий слайд
+   //    } else {
+   //       current.textContent = slideIndex;
+   //    }
+   // }
+
+   // function plusSlides(n) {
+   //    showSlides(slideIndex += n);
+   // }
+
+   // prev.addEventListener('click', () => {
+   //    plusSlides(-1);
+   // });
+
+   // next.addEventListener('click', () => {
+   //    plusSlides(1);
+   // });
+
    const slides = document.querySelectorAll('.offer__slide'),
       prev = document.querySelector('.offer__slider-prev'),
       next = document.querySelector('.offer__slider-next'),
       total = document.querySelector('#total'),
-      current = document.querySelector('#current');
-   let slideIndex = 1;
+      current = document.querySelector('#current'),
+      slidesWrapper = document.querySelector('.offer__slider-wrapper'),
+      slidesField = document.querySelector('.offer__slider-inner'),
+      width = window.getComputedStyle(slidesWrapper).width; // ширина окна показа слайда
 
-   showSlides(slideIndex);
+   let slideIndex = 1,
+      offset = 0; // Чтоб смещать слайды относительно чего-то нам нужен ориентир
 
    if (slides.length < 10) { // если количество слайдов меньше 10,
-      total.textContent = `0${slides.length}`; // то добавляем 0 к номеру слайда
+      total.textContent = `0${slides.length}`; // то добавляем 0 к общему количеству слайдов
+      current.textContent = `0${slideIndex}`; // то добавляем 0 к номеру слайда
    } else { // если количество слайдов больше 10, 
-      total.textContent = slides.length; // то добавляем только количество слайдов
+      total.textContent = slides.length; // то добавляем только общее количество слайдов
+      current.textContent = slideIndex; // то записываем номер слайда
    }
 
-   function showSlides(n) {
-      if (n > slides.length) {
-         slideIndex = 1; // Если slides достигло максимума, то перемещаемся на первый slideIndex = 1
-      }
+   slidesField.style.width = 100 * slides.length + '%'; // поле в котором все слайды в одну строку, задаем ширину
+   slidesField.style.display = 'flex'; // выстраиваем слайды в одну линию
+   slidesField.style.transition = '0.5s all';
 
-      if (n < 1) { // Если слайд перемещается на менее 1, то перемещаемся на последний слайд
-         slideIndex = slides.length;
-      }
+   slidesWrapper.style.overflow = 'hidden'; // скрываем все слайды не попадающие в область видимости
 
-      slides.forEach(item => item.style.display = 'none'); // скрываем все слайды
-
-      slides[slideIndex - 1].style.display = 'block'; // показываем активный
-
-      if (slides.length < 10) {
-         current.textContent = `0${slideIndex}`; // slideIndex - текущий слайд
-      } else {
-         current.textContent = slideIndex;
-      }
-   }
-
-   function plusSlides(n) {
-      showSlides(slideIndex += n);
-   }
-
-   prev.addEventListener('click', () => {
-      plusSlides(-1);
+   slides.forEach(slide => {
+      slide.style.width = width; // переберем и каждому слайду установим ширину
    });
 
    next.addEventListener('click', () => {
-      plusSlides(1);
+      if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
+         offset = 0; // если доходим до последнего слайда, тогда возвращаемся на первый
+      } else { // если не последний слайд, то добавляем смещение
+         offset += +width.slice(0, width.length - 2);
+      }
+
+      slidesField.style.transform = `translateX(-${offset}px)`; // на сколько смещать слайдер
+
+      // контролируем слайд-индекс
+      if (slideIndex == slides.length) { // если слайдер дошел до конца
+         slideIndex = 1; // то необходимо переместиться в первую позицию
+      } else {
+         slideIndex++; // или увеличиваем нумерацию
+      }
+
+      if (slides.length < 10) {
+         current.textContent = `0${slideIndex}`;
+      } else {
+         current.textContent = slideIndex;
+      }
    });
 
+   prev.addEventListener('click', () => {
+      if (offset == 0) { // если доходим до первого слайда, тогда возвращаемся на последний
+         offset = +width.slice(0, width.length - 2) * (slides.length - 1);
+      } else { // если не первый слайд, то добавляем смещение
+         offset -= +width.slice(0, width.length - 2);
+      }
+
+      slidesField.style.transform = `translateX(-${offset}px)`; // на сколько смещать слайдер
+
+      if (slideIndex == 1) { // если слайдер дошел до начала
+         slideIndex = slides.length; // то необходимо переместиться в последнюю позицию
+      } else {
+         slideIndex--; // или уменьшаем нумерацию
+      }
+
+      if (slides.length < 10) {
+         current.textContent = `0${slideIndex}`;
+      } else {
+         current.textContent = slideIndex;
+      }
+   });
 
 
 });
