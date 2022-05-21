@@ -388,12 +388,22 @@ window.addEventListener('DOMContentLoaded', () => {
    let slideIndex = 1,
       offset = 0; // Чтоб смещать слайды относительно чего-то нам нужен ориентир
 
+   function plusZero(slides) { // функция для замены повторяющегося выражения
+      if (slides.length < 10) { // если количество слайдов меньше 10,
+         current.textContent = `0${slideIndex}`; // то добавляем 0 к номеру слайда
+         return current;
+      } else {
+         current.textContent = slideIndex; // то записываем номер слайда
+         return current;
+      }
+   }
+
+   plusZero(slides);
+
    if (slides.length < 10) { // если количество слайдов меньше 10,
       total.textContent = `0${slides.length}`; // то добавляем 0 к общему количеству слайдов
-      current.textContent = `0${slideIndex}`; // то добавляем 0 к номеру слайда
    } else { // если количество слайдов больше 10, 
       total.textContent = slides.length; // то добавляем только общее количество слайдов
-      current.textContent = slideIndex; // то записываем номер слайда
    }
 
    slidesField.style.width = 100 * slides.length + '%'; // поле в котором все слайды в одну строку, задаем ширину
@@ -450,11 +460,21 @@ window.addEventListener('DOMContentLoaded', () => {
       dots.push(dot);
    }
 
+   function deleteNotDigits(str) { // функция для замены повторяющегося выражения
+      return +str.replace(/\D/g, ''); // вырезание всех не цифр
+   }
+
+   function dotsOpasity(dots) { // функция для замены повторяющегося выражения
+      dots.forEach(dot => dot.style.opacity = ".5");
+      dots[slideIndex-1].style.opacity = 1;
+      return dots;
+   }
+
    next.addEventListener('click', () => {
-      if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) {
+      if (offset == deleteNotDigits(width) * (slides.length - 1)) {
          offset = 0; // если доходим до последнего слайда, тогда возвращаемся на первый
       } else { // если не последний слайд, то добавляем смещение
-         offset += +width.slice(0, width.length - 2);
+         offset += deleteNotDigits(width);
       }
 
       slidesField.style.transform = `translateX(-${offset}px)`; // на сколько смещать слайдер
@@ -466,21 +486,15 @@ window.addEventListener('DOMContentLoaded', () => {
          slideIndex++; // или увеличиваем нумерацию
       }
 
-      if (slides.length < 10) {
-         current.textContent = `0${slideIndex}`;
-      } else {
-         current.textContent = slideIndex;
-      }
-
-      dots.forEach(dot => dot.style.opacity = ".5");
-      dots[slideIndex-1].style.opacity = 1;
+      plusZero(slides);
+      dotsOpasity(dots);
    });
 
    prev.addEventListener('click', () => {
       if (offset == 0) { // если доходим до первого слайда, тогда возвращаемся на последний
-         offset = +width.slice(0, width.length - 2) * (slides.length - 1);
+         offset = deleteNotDigits(width) * (slides.length - 1);
       } else { // если не первый слайд, то добавляем смещение
-         offset -= +width.slice(0, width.length - 2);
+         offset -= deleteNotDigits(width);
       }
 
       slidesField.style.transform = `translateX(-${offset}px)`; // на сколько смещать слайдер
@@ -491,14 +505,8 @@ window.addEventListener('DOMContentLoaded', () => {
          slideIndex--; // или уменьшаем нумерацию
       }
 
-      if (slides.length < 10) {
-         current.textContent = `0${slideIndex}`;
-      } else {
-         current.textContent = slideIndex;
-      }
-
-      dots.forEach(dot => dot.style.opacity = ".5");
-      dots[slideIndex-1].style.opacity = 1;
+      plusZero(slides);
+      dotsOpasity(dots);
    });
 
    dots.forEach(dot => {
@@ -506,18 +514,12 @@ window.addEventListener('DOMContentLoaded', () => {
          const slideTo = e.target.getAttribute('data-slide-to');
 
          slideIndex = slideTo; // индикатор счетчика слайдов
-         offset = +width.slice(0, width.length - 2) * (slideTo - 1);
+         offset = deleteNotDigits(width) * (slideTo - 1);
 
          slidesField.style.transform = `translateX(-${offset}px)`;
 
-         if (slides.length < 10) {
-            current.textContent =  `0${slideIndex}`;
-         } else {
-            current.textContent =  slideIndex;
-         }
-
-         dots.forEach(dot => dot.style.opacity = ".5");
-         dots[slideIndex-1].style.opacity = 1;
+         plusZero(slides);
+         dotsOpasity(dots);
       });
    });
 
