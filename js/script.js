@@ -526,9 +526,21 @@ window.addEventListener('DOMContentLoaded', () => {
    // Calculator
 
    const result = document.querySelector('.calculating__result span');
-   let sex = 'female', // устанавливается по дефолту female
-      height, weight, age,
-      ratio = 1.375; // устанавливается по дефолту 1.375
+   let sex, height, weight, age, ratio;
+
+   if (localStorage.getItem('sex')) { // если значение localStorage усиановлено
+      sex = localStorage.getItem('sex'); // то присваиваем его переменной sex
+   } else { // если значение localStorage не установлено
+      sex = 'female'; // то присваиваем переменной sex по умолчанию female
+      localStorage.setItem('sex', 'female'); // и записываем его в localStorage
+   }
+
+   if (localStorage.getItem('ratio')) { // то же самое и с ratio
+      ratio = localStorage.getItem('ratio');
+   } else {
+      ratio = 1.375;
+      localStorage.setItem('ratio', 1.375);
+   }
 
    function calcTotal() { // основная функция для подсчета каллорий
       if (!sex || !height || !weight || !age || !ratio) { // функция отрабатывает только при заполнении всех данных
@@ -544,15 +556,34 @@ window.addEventListener('DOMContentLoaded', () => {
 
    calcTotal();
 
-   function getStaticInformation(parentSelector, activeClass) {
-      const elements = document.querySelectorAll(`${parentSelector} div`); // внутри родителя получаем все div
+   function initLocalSettings(selector, activeClass) {
+      const elements = document.querySelectorAll(selector);
+
+      elements.forEach(elem => { // перебираем все элементы
+         elem.classList.remove(activeClass); // и удаляем у всех класс активности
+         if (elem.getAttribute('id') === localStorage.getItem('sex')) { // проверяем id и сравниваем с localStorage
+            elem.classList.add(activeClass); // и добавляем класс активности элементу отмеченному в localStorage
+         }
+         if (elem.getAttribute('data-ratio') === localStorage.getItem('ratio')) {
+            elem.classList.add(activeClass);
+         }
+      });
+   }
+
+   initLocalSettings('#gender div', 'calculating__choose-item_active');
+   initLocalSettings('.calculating__choose_big div', 'calculating__choose-item_active');
+
+   function getStaticInformation(selector, activeClass) {
+      const elements = document.querySelectorAll(selector); 
 
       elements.forEach(elem => {
          elem.addEventListener('click', (e) => { // отслеживаем клики по родительскому элементу
             if (e.target.getAttribute('data-ratio')) { // если у блока есть data-атрибут, то меняем data-ratio
                ratio = +e.target.getAttribute('data-ratio');
+               localStorage.setItem('ratio', +e.target.getAttribute('data-ratio'));
             } else { // или если у блока есть id, то меняем его
                sex = e.target.getAttribute('id');
+               localStorage.setItem('sex', e.target.getAttribute('id'));
             }
 
             elements.forEach(elem => { // сначала activeClass убираем у всех элементов
@@ -566,13 +597,19 @@ window.addEventListener('DOMContentLoaded', () => {
       });
    }
 
-   getStaticInformation('#gender', 'calculating__choose-item_active');
-   getStaticInformation('.calculating__choose_big', 'calculating__choose-item_active');
+   getStaticInformation('#gender div', 'calculating__choose-item_active');
+   getStaticInformation('.calculating__choose_big div', 'calculating__choose-item_active');
 
    function getDynamicInformation(selector) {
       const input = document.querySelector(selector);
 
       input.addEventListener('input', () => {
+
+         if (input.value.match(/\D/g)) { // если пользователем введено не число
+            input.style.border = "1px solid red"; // то сообщаем об этом красным border
+         } else {
+            input.style.border = 'none'; // или нет border
+         }
          switch(input.getAttribute('id')) { // при помощи swith case проверяем в какой input кликнул пользователь
             case "height":
                height = +input.value;
