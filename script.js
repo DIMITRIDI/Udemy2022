@@ -1,34 +1,17 @@
 'use strict';
 
-// new RegExp('patern', 'flags');
-// /patern/flags
+const persone = {
+   name: 'Alex',
+   age: 25,
 
-// const ans = prompt('Введите ваше число');
+   get userAge() {
+      return this.age;
+   },
 
-// const reg = /\d/g;
+   set userAge(num) {
+      this.age = num;
+   }
+};
 
-// console.log(ans.match(reg));
-
-const str = 'My name is R2D2'; // вырежем имя R2D2
-
-console.log(str.match(/\D/ig)); // ищем все НЕцифры
-
-// \D - ищем нецифры
-// \W - ищем неслова
-// \S - ищем непробелы
-
-// \d - ищем цифры
-// \w - ищем слова
-// \s - ищем пробелы
-
-// i
-// g
-// m
-
-// console.log(ans.match(reg));
-
-// const pass = prompt('Password');
-
-// console.log(pass.replace(/\./g, '*'));
-
-// console.log('12-34-56'.replace(/-/g, ':'));
+console.log(persone.userAge = 30);
+console.log(persone.userAge);
