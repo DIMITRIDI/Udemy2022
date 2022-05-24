@@ -1,5 +1,4 @@
-function timer() {
-   const deadLine = '2022-12-31';
+function timer(id, deadLine) {
 
    function getTimeRemaining(endtime) { // получаем разницу между дедлайн и текущей датой в милисекундах
       let days, hours, minutes, seconds;
@@ -60,7 +59,7 @@ function timer() {
       }
    }
 
-   setClock('.timer', deadLine);
+   setClock(id, deadLine);
 }
 
-module.exports = timer; 
+export default timer; 

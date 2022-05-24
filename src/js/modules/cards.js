@@ -1,3 +1,5 @@
+import {getResource} from '../services/services';
+
 function cards() {
    class MenuCard {
       constructor(src, alt, title, descr, price, parentSelector, ...classes) { // добавим Rest-оператор classes
@@ -40,16 +42,6 @@ function cards() {
       }
    }
 
-   const getResource = async (url) => { // делаем запрос
-      const res = await fetch(url); // дожидаемся окончания запроса
-      
-      if (!res.ok) { // если что-то пошло не так
-         throw new Error(`Could not fetch ${url}, status: ${res.status}`);
-      }
-
-      return await res.json(); // трансформируем данные в JS объект
-   };
-
    getResource('http://localhost:3000/menu') // получаем массив с сервера
       .then(data => {
          data.forEach(({img, altimg, title, descr, price}) => { // объект деструктуризируем
@@ -59,4 +51,4 @@ function cards() {
       });
 }
 
-module.exports = cards;
+export default cards;
