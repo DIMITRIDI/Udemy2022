@@ -2,8 +2,10 @@
   "name": "practice",
   "version": "1.0.0",
   "description": "",
-  "main": "script.js",
+  "main": "index.js",
   "scripts": {
+    "dev": "webpack --mode development",
+    "build": "webpack --mode production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -17,6 +19,7 @@
   },
   "homepage": "https://github.com/DIMITRIDI/Udemy2022#readme",
   "devDependencies": {
-    "json-server": "^0.17.0"
+    "webpack": "^5.72.1",
+    "webpack-cli": "^4.9.2"
   }
 }
