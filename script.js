@@ -1,19 +1,18 @@
 'use strict';
 
-console.log(1);
+setTimeout(() => console.log('timeout')); // второй аргумент не задан
 
-setTimeout(() => {
-   console.log('timeout');
-}, 2000);
+Promise.resolve() // промис выполнился в положительную сторону
+   .then(() => console.log('promise')); // раз промис готов, то мы его используем
 
-setTimeout(() => {
-   console.log('timeout_4000');
-}, 4000);
+queueMicrotask(() => console.log('wow')); // сообщение выполнилось между двумя микрозадачами
 
-console.log(2);
+Promise.resolve()
+   .then(() => console.log('promise_2'));
 
-setTimeout(() => {
-   console.log(1);
-}, 0);
+console.log('code');
 
-console.log(2);
+// () => {} - макрозадача
+// microtasks: then, catch, finally, либо при помощи оператора awai
+// render - перерисовка страницы
+// () => {} - следующая макрозадача
